@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Login - EduMind AI{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <div class="auth-header">
+            <i class="fa-solid fa-right-to-bracket auth-icon"></i>
+            <h2>Student Login</h2>
+            <p>Access your dashboard and chat history</p>
+        </div>
+
+        <form action="{{ url_for('login') }}" method="POST" class="auth-form">
+            <!-- Username or Email -->
+            <div class="form-group">
+                <label for="identifier"><i class="fa-solid fa-user"></i> Email or Username</label>
+                <input type="text" id="identifier" name="identifier" placeholder="Enter username or email" required>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+
+        <div class="auth-footer">
+            <p>New student? <a href="{{ url_for('register') }}">Create an account here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

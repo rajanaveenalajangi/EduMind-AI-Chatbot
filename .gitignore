@@ -1,0 +1,24 @@
+# Python bytecode and caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Virtual Environment configurations
+venv/
+.venv/
+env/
+ENV/
+
+# Local configuration secrets
+.env
+
+# SQLite local databases
+*.db
+*.sqlite3
+
+# Operating System specific files
+.DS_Store
+Thumbs.db

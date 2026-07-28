@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}EduMind AI - Student Learning Assistant{% endblock %}</title>
+    <!-- Google Fonts: Inter for clean typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome for professional modern icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style sheet -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <!-- Load theme.js early in the head to prevent page flash of wrong theme -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</head>
+<body class="light-mode"> <!-- JS will toggle this between light-mode and dark-mode -->
+    
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="{{ url_for('index') }}" class="nav-brand">
+                <i class="fa-solid fa-graduation-cap brand-icon"></i>
+                <span>EduMind AI</span>
+            </a>
+            
+            <!-- Mobile Navigation Toggle -->
+            <button class="nav-toggle" id="nav-toggle-btn" aria-label="Toggle Navigation">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            
+            <ul class="nav-menu" id="nav-menu-list">
+                {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('dashboard') }}" class="nav-link"><i class="fa-solid fa-chart-simple"></i> Dashboard</a></li>
+                    <li><a href="{{ url_for('chat_home') }}" class="nav-link"><i class="fa-solid fa-comments"></i> Chat</a></li>
+                    <li><a href="{{ url_for('profile') }}" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a></li>
+                    <li><a href="{{ url_for('logout') }}" class="nav-link nav-btn-outline"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('index') }}" class="nav-link">Home</a></li>
+                    <li><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
+                    <li><a href="{{ url_for('register') }}" class="nav-link nav-btn">Register</a></li>
+                {% endif %}
+                <!-- Theme Toggle Button -->
+                <li>
+                    <button id="theme-toggle" class="theme-toggle-btn" title="Toggle Light/Dark Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash Messages Container -->
+    <div class="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+                        <span>{{ message }}</span>
+                        <button class="alert-close" onclick="this.parentElement.remove();">&times;</button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; {{ datetime.now().year if datetime else 2026 }} EduMind AI. Built for Student Learning & viva demonstration.</p>
+            <p class="footer-subtext">Intermediate Level B.Tech Final Year CSE Project</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Nav JavaScript Helper -->
+    <script>
+        const navToggleBtn = document.getElementById('nav-toggle-btn');
+        const navMenuList = document.getElementById('nav-menu-list');
+        
+        if (navToggleBtn && navMenuList) {
+            navToggleBtn.addEventListener('click', () => {
+                navMenuList.classList.toggle('active');
+                const icon = navToggleBtn.querySelector('i');
+                if (navMenuList.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+
+{% block title %}Chat - EduMind AI{% endblock %}
+
+{% block content %}
+<div class="chat-layout">
+    <!-- Sidebar Toggle for Mobile (floating button) -->
+    <button class="mobile-sidebar-toggle" id="sidebar-toggle-btn" aria-label="Toggle Conversations Sidebar">
+        <i class="fa-solid fa-list-ul"></i> History
+    </button>
+
+    <!-- Sidebar pane -->
+    <aside class="chat-sidebar" id="chat-sidebar-element">
+        <div class="sidebar-header">
+            <a href="{{ url_for('new_chat') }}" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> New Chat</a>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="sidebar-search">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="search-input" placeholder="Search conversations..." autocomplete="off">
+        </div>
+
+        <!-- Previous Conversations List -->
+        <div class="sidebar-history-list" id="history-list-container">
+            {% if conversations %}
+                {% for conv in conversations %}
+                    <div class="sidebar-history-item {% if active_conversation and active_conversation.id == conv.id %}active{% endif %}" data-id="{{ conv.id }}">
+                        <a href="{{ url_for('chat_session', conversation_id=conv.id) }}" class="history-item-link">
+                            <i class="fa-regular fa-comments"></i>
+                            <span class="history-item-title">{{ conv.title }}</span>
+                        </a>
+                        <form action="{{ url_for('delete_chat', conversation_id=conv.id) }}" method="POST" onsubmit="return confirm('Delete this conversation?');" class="delete-history-form">
+                            <button type="submit" class="delete-history-btn" title="Delete conversation">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="sidebar-empty">No previous chats.</div>
+            {% endif %}
+        </div>
+
+        <!-- Quick Sidebar Navigation links -->
+        <div class="sidebar-footer">
+            <a href="{{ url_for('dashboard') }}" class="sidebar-footer-link"><i class="fa-solid fa-house"></i> Dashboard</a>
+            <a href="{{ url_for('profile') }}" class="sidebar-footer-link"><i class="fa-solid fa-user-gear"></i> Profile</a>
+        </div>
+    </aside>
+
+    <!-- Main Chat Window Area -->
+    <section class="chat-main">
+        <!-- Message Container -->
+        <div class="chat-messages-container" id="chat-messages-box">
+            {% if messages %}
+                {% for msg in messages %}
+                    <div class="message-row {{ msg.role }}-row">
+                        <div class="message-bubble {{ msg.role }}-bubble">
+                            <div class="message-content">{{ msg.content }}</div>
+                            {% if msg.role == 'assistant' %}
+                                <div class="message-actions">
+                                    <button class="copy-response-btn" onclick="copyResponse(this)">
+                                        <i class="fa-regular fa-copy"></i> Copy
+                                    </button>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <!-- Welcome View when conversation is empty -->
+                <div class="chat-welcome-container" id="chat-welcome-view">
+                    <div class="welcome-header">
+                        <i class="fa-solid fa-graduation-cap welcome-logo"></i>
+                        <h2>How can I help you today?</h2>
+                        <p>I am EduMind AI, your student learning assistant. Ask me questions about concepts, coding, placements, or exam prep.</p>
+                    </div>
+                    
+                    <!-- Suggested Questions Grid -->
+                    <div class="suggested-grid">
+                        <div class="suggestion-card" onclick="sendSuggestion('Explain DBMS normalization')">
+                            <h4>Explain DBMS Normalization</h4>
+                            <p>Learn about 1NF, 2NF, 3NF, and BCNF simply.</p>
+                        </div>
+                        <div class="suggestion-card" onclick="sendSuggestion('Give me a Python coding question')">
+                            <h4>Python Coding</h4>
+                            <p>Get a Python practice task with instructions.</p>
+                        </div>
+                        <div class="suggestion-card" onclick="sendSuggestion('Explain OSI model')">
+                            <h4>OSI Model</h4>
+                            <p>Understand the 7 layers of Computer Networks.</p>
+                        </div>
+                        <div class="suggestion-card" onclick="sendSuggestion('Give me SQL interview questions')">
+                            <h4>SQL Interview Prep</h4>
+                            <p>Top SQL queries and concepts asked in interviews.</p>
+                        </div>
+                        <div class="suggestion-card" onclick="sendSuggestion('Create a study plan')">
+                            <h4>Create a Study Plan</h4>
+                            <p>Get a structured timetable for your preparations.</p>
+                        </div>
+                        <div class="suggestion-card" onclick="sendSuggestion('Explain a topic in Telugu')">
+                            <h4>Telugu Explanations</h4>
+                            <p>Explain normal distribution / quicksort in Telugu.</p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <!-- Loading Indicator -->
+            <div class="message-row assistant-row" id="chat-loading-indicator" style="display: none;">
+                <div class="message-bubble assistant-bubble loading-bubble">
+                    <div class="loading-content">
+                        <div class="loading-dots">
+                            <span></span><span></span><span></span>
+                        </div>
+                        <span class="loading-text">EduMind AI is thinking...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input Form Area -->
+        <div class="chat-input-container">
+            <form id="chat-message-form" class="chat-form">
+                <!-- Keep conversation_id in a hidden field -->
+                <input type="hidden" id="active-conversation-id" value="{% if active_conversation %}{{ active_conversation.id }}{% endif %}">
+                <textarea id="chat-user-input" placeholder="Ask EduMind AI something..." required rows="1" maxlength="5000"></textarea>
+                <button type="submit" id="chat-send-btn" title="Send Message">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </section>
+</div>
+
+<!-- Load JS script at end -->
+<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

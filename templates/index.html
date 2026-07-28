@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}EduMind AI - AI-Powered Student Learning Assistant{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-container">
+        <h1 class="hero-title">EduMind AI</h1>
+        <p class="hero-subtitle">Your 24/7 AI-Powered Student Learning Assistant. Get instant explanations, programming help, placement guidance, and study plans tailored just for you.</p>
+        
+        <div class="hero-ctas">
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('chat_home') }}" class="btn btn-primary btn-large">Start Chatting <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline btn-large">View Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('register') }}" class="btn btn-primary btn-large">Register Now <i class="fa-solid fa-user-plus"></i></a>
+                <a href="{{ url_for('login') }}" class="btn btn-outline btn-large">Login to Account</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="info-section">
+    <div class="section-header">
+        <h2>Features Designed for Students</h2>
+        <p>Everything you need to excel in your academic journey and placement preparation.</p>
+    </div>
+    
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+            <h3>Conceptual Clarification</h3>
+            <p>Stuck on DBMS Normalization, Operating System theories, or computer network models? Get explanations simplified with examples.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-code"></i></div>
+            <h3>Coding & Debugging</h3>
+            <p>Generate, explain, and debug Python, SQL, HTML, CSS, and basic JavaScript. Identify logic bugs and syntax errors easily.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-briefcase"></i></div>
+            <h3>Placement Prep & Aptitude</h3>
+            <p>Get lists of SQL interview questions, practice aptitude questions, mock interview tips, and placement advice.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-calendar-day"></i></div>
+            <h3>Study Plans & Writing Help</h3>
+            <p>Organize exams with personalized schedules, plan study sessions, or draft formal leave letters and project report structures.</p>
+        </div>
+        
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-language"></i></div>
+            <h3>Bilingual Explanation</h3>
+            <p>Want topics explained in your regional language? EduMind AI supports explanations in both English and Telugu seamlessly.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon"><i class="fa-solid fa-history"></i></div>
+            <h3>Saved Chat History</h3>
+            <p>All conversations are saved to your profile. Search, open, delete, and continue previous discussions whenever you like.</p>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section class="how-it-works-section">
+    <div class="section-header">
+        <h2>How It Works</h2>
+        <p>Start learning with three simple steps.</p>
+    </div>
+    
+    <div class="steps-container">
+        <div class="step-item">
+            <div class="step-number">1</div>
+            <h3>Create a Profile</h3>
+            <p>Sign up in seconds with your name, email, and password to secure your personal dashboard.</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">2</div>
+            <h3>Ask Any Academic Question</h3>
+            <p>Type your query in natural language or click on quick suggested cards in the chat window.</p>
+        </div>
+        <div class="step-item">
+            <div class="step-number">3</div>
+            <h3>Interact & Learn</h3>
+            <p>Read explanations, copy generated code blocks, and ask follow-up questions with full conversation memory context.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Student Benefits Section -->
+<section class="benefits-section">
+    <div class="benefits-container">
+        <div class="benefits-text">
+            <h2>Why Use EduMind AI?</h2>
+            <ul class="benefits-list">
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Self-Paced Learning:</strong> Learn topics at your own pace without classroom pressure.</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Immediate Answers:</strong> Avoid waiting for hours to resolve simple programming bugs.</span>
+                </li>
+                <li>
+                    <i class="fa-solid fa-circle-check"></i>
+                    <span><strong>Project & Viva Ready:</strong> Perfect example of building real-world AI applications with SQL databases.</span>
+                </li>
+            </ul>
+        </div>
+        <div class="benefits-visual">
+            <div class="benefits-box">
+                <i class="fa-solid fa-laptop-code"></i>
+                <span>HTML/CSS/JS + Flask + SQLite + Gemini API</span>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
